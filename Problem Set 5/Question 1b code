@@ -1,0 +1,22 @@
+# Model for Notch-Delta at v<<<1
+       # D1: active Delta concentration of cell 1
+       # Xi: active Delta concentration of cell 2
+       function precise_adapt(D1, D2)
+           v = 0.0001               #inactivation of D/inactivation of N
+           
+           u = ((1/(1+10*(((D1^2)/0.1+(D1^2))^2)))-D2)*v          #dD1/dt
+           v = ((1/(1+10*(((D1^2)/0.1+(D1^2))^2)))-D2)*v          #dD2/dt
+           
+           return Point(u,v)
+       end
+# Construct the streamplot
+       plt1 = Scene(resolution =(400,400))
+        
+streamplot!(plt1, precise_adapt, 0..4, 0..4, colormap = :plasma, 
+           gridsize= (32,32), arrow_size = 0.05)
+
+ # Display the plot
+       display(plt1)
+
+# Save the plot
+       save("odeField.png", plt1)
